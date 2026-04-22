@@ -133,7 +133,7 @@ def login_hash(page) -> None:
     if not HASH_EMAIL or not HASH_PASSWORD:
         raise RuntimeError("HASH_EMAIL / HASH_PASSWORD が未設定です")
 
-    page.goto("https://member.jichitai.works/login", wait_until="domcontentloaded", timeout=60000)
+    page.goto(page.goto(LOGIN_URL, wait_until="domcontentloaded", timeout=60000))
     page.wait_for_timeout(5000)
 
     # 入力欄候補を広めに探す
