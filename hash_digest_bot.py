@@ -149,10 +149,15 @@ def login_hash(page) -> None:
     ]
 
     password_selectors = [
-        'input[type="password"]',
-        'input[name="password"]',
-        'input[autocomplete="current-password"]',
-    ]
+    'input[type="password"]',
+    'input[name="password"]',
+    'input[name="passwd"]',
+    'input[name="pass"]',
+    'input[id*="password"]',
+    'input[placeholder*="パスワード"]',
+    'input[autocomplete="current-password"]',
+]
+   
 
     email_filled = False
     for sel in email_selectors:
