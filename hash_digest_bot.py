@@ -131,14 +131,78 @@ def collect_new_items() -> int:
 
 def login_hash(page) -> None:
     if not HASH_EMAIL or not HASH_PASSWORD:
-        raise RuntimeError("HASH_EMAIL / HASH_PASSWORD が未設定です。")
+        raise RuntimeError("HASH_EMAIL / HASH_PASSWORD が未設定です")
 
-    page.goto(LOGIN_URL, wait_until="networkidle")
-    page.fill('input[type="email"]', HASH_EMAIL)
-    page.fill('input[type="password"]', HASH_PASSWORD)
-    page.click('button[type="submit"]')
-    page.wait_for_load_state("networkidle")
+    page.goto("https://member.jichitai.works/login", wait_until="domcontentloaded", timeout=60000)
+    page.wait_for_timeout(5000)
 
+    # 入力欄候補を広めに探す
+    email_selectors = [
+        'input[type="email"]',
+        'input[name="email"]',
+        'input[name="mail"]',
+        'input[placeholder*="メール"]',
+        'input[autocomplete="username"]',
+    ]
+
+    password_selectors = [
+        'input[type="password"]',
+        'input[name="password"]',
+        'input[autocomplete="current-password"]',
+    ]
+
+    email_filled = False
+    for sel in email_selectors:
+        try:
+            page.locator(sel).first.wait_for(timeout=5000)
+            page.locator(sel).first.fill(HASH_EMAIL)
+            email_filled = True
+            break
+        except Exception:
+            pass
+
+    if not email_filled:
+        page.screenshot(path="login_error.png", full_page=True)
+        raise RuntimeError("メール入力欄が見つかりませんでした。login_error.png を確認してください。")
+
+    password_filled = False
+    for sel in password_selectors:
+        try:
+            page.locator(sel).first.wait_for(timeout=5000)
+            page.locator(sel).first.fill(HASH_PASSWORD)
+            password_filled = True
+            break
+        except Exception:
+            pass
+
+    if not password_filled:
+        page.screenshot(path="login_error.png", full_page=True)
+        raise RuntimeError("パスワード入力欄が見つかりませんでした。login_error.png を確認してください。")
+
+    # ログインボタン候補
+    login_clicked = False
+    button_selectors = [
+        'button[type="submit"]',
+        'input[type="submit"]',
+        'button:has-text("ログイン")',
+        'button:has-text("Sign in")',
+        'text=ログイン',
+    ]
+
+    for sel in button_selectors:
+        try:
+            page.locator(sel).first.click(timeout=5000)
+            login_clicked = True
+            break
+        except Exception:
+            pass
+
+    if not login_clicked:
+        page.screenshot(path="login_error.png", full_page=True)
+        raise RuntimeError("ログインボタンが見つかりませんでした。login_error.png を確認してください。")
+
+    page.wait_for_load_state("networkidle", timeout=60000)
+    page.wait_for_timeout(5000)
 
 def try_download_by_locator(page, locator, service_id: str) -> Optional[Path]:
     try:
