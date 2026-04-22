@@ -144,6 +144,8 @@ def login_hash(page) -> None:
         'input[name="mail"]',
         'input[placeholder*="メール"]',
         'input[autocomplete="username"]',
+        'input[type="text"]',
+    'input[name="login"]',
     ]
 
     password_selectors = [
