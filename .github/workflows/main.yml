@@ -1,0 +1,34 @@
+name: hash-digest
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '55 22 * * *'  # 毎朝7:55（日本時間）
+
+jobs:
+  run-bot:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: |
+          pip install requests beautifulsoup4 playwright openai
+          playwright install
+
+      - name: Run script
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          OPENAI_MODEL: ${{ secrets.OPENAI_MODEL }}
+          HASH_EMAIL: ${{ secrets.HASH_EMAIL }}
+          HASH_PASSWORD: ${{ secrets.HASH_PASSWORD }}
+          LINE_CHANNEL_ACCESS_TOKEN: ${{ secrets.LINE_CHANNEL_ACCESS_TOKEN }}
+          LINE_USER_ID: ${{ secrets.LINE_USER_ID }}
+        run: python hash_digest_bot.py
