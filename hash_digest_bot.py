@@ -148,16 +148,16 @@ def login_hash(page) -> None:
     'input[name="login"]',
     ]
 
-    password_selectors = [
-    'input[type="password"]',
-    'input[name="password"]',
-    'input[name="passwd"]',
-    'input[name="pass"]',
-    'input[id*="password"]',
-    'input[placeholder*="パスワード"]',
-    'input[autocomplete="current-password"]',
-]
-   
+    
+       password_selectors = [
+        'input[type="password"]',
+        'input[name="password"]',
+        'input[name="passwd"]',
+        'input[name="pass"]',
+        'input[id*="password"]',
+        'input[placeholder*="パスワード"]',
+        'input[autocomplete="current-password"]',
+    ]
 
     email_filled = False
     for sel in email_selectors:
@@ -172,6 +172,31 @@ def login_hash(page) -> None:
     if not email_filled:
         page.screenshot(path="login_error.png", full_page=True)
         raise RuntimeError("メール入力欄が見つかりませんでした。login_error.png を確認してください。")
+    # メール入力後、必要なら次へ進む
+    next_button_selectors = [
+        'button[type="submit"]',
+        'input[type="submit"]',
+        'button:has-text("次へ")',
+        'button:has-text("続行")',
+        'button:has-text("ログイン")',
+        'text=次へ',
+        'text=続行',
+    ]
+
+    for sel in next_button_selectors:
+    try:
+        page.locator(sel).first.click(timeout=3000)
+        page.wait_for_load_state("networkidle", timeout=10000)
+
+        try:
+            page.wait_for_selector('input[type="password"]', timeout=10000)
+        except:
+            pass
+
+        page.wait_for_timeout(3000)
+        break
+    except Exception:
+        pass
 
     password_filled = False
     for sel in password_selectors:
