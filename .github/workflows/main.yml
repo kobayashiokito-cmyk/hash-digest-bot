@@ -21,7 +21,7 @@ jobs:
       - name: Install dependencies
         run: |
           pip install requests beautifulsoup4 playwright openai
-          playwright install
+          playwright install --with-deps chromium
 
       - name: Run script
         env:
