@@ -138,9 +138,19 @@ def login_hash(page) -> None:
         raise RuntimeError("HASH_EMAIL / HASH_PASSWORD が未設定です")
 
     page.goto(LOGIN_URL, wait_until="domcontentloaded", timeout=60000)
-    page.screenshot(path="debug.png", full_page=True)
-    page.wait_for_timeout(5000)
 
+　　 # ログインボタン押す（より正確に）
+　　 page.click('a:has-text("ログイン")')
+
+　　 # ページ遷移をちゃんと待つ
+　　 page.wait_for_timeout(3000)
+
+　　 # パスワード欄が出るまで待つ
+　　 page.wait_for_selector('input[type="password"]', timeout=10000)
+
+　　 # デバッグ
+　　 page.screenshot(path="debug.png", full_page=True)
+　　 page.wait_for_timeout(5000)
     email_selectors = [
         'input[type="email"]',
         'input[name="email"]',
