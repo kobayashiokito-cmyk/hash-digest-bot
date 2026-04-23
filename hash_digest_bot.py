@@ -137,18 +137,18 @@ def login_hash(page) -> None:
     if not HASH_EMAIL or not HASH_PASSWORD:
         raise RuntimeError("HASH_EMAIL / HASH_PASSWORD が未設定です")
 
-    print("① ログインページへ移動")
+    print("① ログインページへ移動", flush=True)
     page.goto(LOGIN_URL, wait_until="domcontentloaded", timeout=60000)
 
     page.screenshot(path="debug_1.png", full_page=True)
 
-    print("② ログインボタン待機")
+    print("② ログインボタン待機", flush=True)
     page.wait_for_selector('a:has-text("ログイン")', timeout=10000)
 
-    print("③ ログインボタンクリック")
+    print("③ ログインボタンクリック", flush=True)
     page.locator('a:has-text("ログイン")').first.click(force=True)
     page.wait_for_timeout(3000)
-    print("④ パスワード入力欄待機前")
+    print("④ パスワード入力欄待機前", flush=True)
     page.screenshot(path="debug_2.png", full_page=True)
     page.wait_for_selector('input[type="password"]', timeout=10000)
     page.screenshot(path="debug.png", full_page=True)
@@ -434,6 +434,7 @@ def send_digest() -> int:
 
 
 def main() -> None:
+    print("send_digest開始", flush=True)
     mode = os.getenv("RUN_MODE", "collect_and_send")
 
     if mode == "collect":
