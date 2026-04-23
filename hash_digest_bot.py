@@ -151,7 +151,7 @@ def login_hash(page) -> None:
     
     print("④ パスワード入力欄待機前", flush=True)
     print("現在URL:", page.url)
-　　 page.screenshot(path="debug_after_login_click.png", full_page=True)
+    page.screenshot(path="debug_after_login_click.png", full_page=True)
     print("スクショ保存完了")    
     
     page.wait_for_selector('input[type="password"]', timeout=10000)
