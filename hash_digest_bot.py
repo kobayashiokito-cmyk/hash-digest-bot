@@ -164,7 +164,7 @@ def login_hash(page) -> None:
 
     page.screenshot(path="debug_password_filled.png", full_page=True)
 
-    page.locator('button:has-text("ログイン"), text=ログイン').first.click()
+    page.get_by_text("ログイン").click()
     page.wait_for_timeout(5000)
     print("⑦ ログインボタンクリック完了", flush=True)
 
