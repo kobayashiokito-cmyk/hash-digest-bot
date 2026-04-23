@@ -154,7 +154,7 @@ def login_hash(page) -> None:
     page.screenshot(path="debug_after_login_click.png", full_page=True)
     print("スクショ保存完了")
     page.wait_for_selector('input[type="email"], input[name="email"], input[type="text"]', timeout=15000)
-    page.fill('input[type="email"]', HASH_EMAIL)
+    page.locator('input[type="email"], input[name="email"], input[type="text"]').first.fill(HASH_EMAIL)
     print("⑤ メール入力完了", flush=True)
 
     page.locator('button:has-text("次へ"), button:has-text("Next"), button[type="submit"]').first.click()
