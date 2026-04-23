@@ -157,7 +157,7 @@ def login_hash(page) -> None:
     page.locator('input[type="email"], input[name="email"], input[type="text"]').first.fill(HASH_EMAIL)
     print("⑤ メール入力完了", flush=True)
 
-    page.locator('button:has-text("次へ"), button:has-text("Next"), button[type="submit"]').first.click()
+    page.locator('text=次へ').first.click()
     page.wait_for_timeout(3000)
     print("⑥ 次へクリック完了", flush=True)
 
