@@ -148,15 +148,29 @@ def login_hash(page) -> None:
     print("③ ログインボタンクリック", flush=True)
     page.locator('a:has-text("ログイン")').first.click(force=True)
     page.wait_for_timeout(3000)
-    
-    print("④ パスワード入力欄待機前", flush=True)
+
+    print("④ メール入力画面確認", flush=True)
     print("現在URL:", page.url)
     page.screenshot(path="debug_after_login_click.png", full_page=True)
-    print("スクショ保存完了")    
-    
-    page.wait_for_selector('input[type="password"]', timeout=10000)
-    page.screenshot(path="debug.png", full_page=True)
-    page.wait_for_timeout(5000)
+    print("スクショ保存完了")
+
+    page.wait_for_selector('input[type="email"]', timeout=15000)
+    page.fill('input[type="email"]', HASH_EMAIL)
+    print("⑤ メール入力完了", flush=True)
+
+    page.locator('button:has-text("次へ"), button:has-text("Next"), button[type="submit"]').first.click()
+    page.wait_for_timeout(3000)
+    print("⑥ 次へクリック完了", flush=True)
+
+    page.screenshot(path="debug_after_email_submit.png", full_page=True)
+
+    page.wait_for_selector('input[type="password"]', timeout=15000)
+    print("⑦ パスワード欄見つかった", flush=True)
+
+    page.fill('input[type="password"]', HASH_PASSWORD)
+    print("⑧ パスワード入力完了", flush=True)
+
+    page.screenshot(path="debug_password_filled.png", full_page=True)
     email_selectors = [
         'input[type="email"]',
         'input[name="email"]',
