@@ -40,5 +40,5 @@ jobs:
         with:
           name: debug-files
           path: |
-            debug.png
-            login_error.png
+            **/*.png
+            **/*.jpg
