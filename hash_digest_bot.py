@@ -148,8 +148,12 @@ def login_hash(page) -> None:
     print("③ ログインボタンクリック", flush=True)
     page.locator('a:has-text("ログイン")').first.click(force=True)
     page.wait_for_timeout(3000)
+    
     print("④ パスワード入力欄待機前", flush=True)
-    page.screenshot(path="debug_2.png", full_page=True)
+    print("現在URL:", page.url)
+　　 page.screenshot(path="debug_after_login_click.png", full_page=True)
+    print("スクショ保存完了")    
+    
     page.wait_for_selector('input[type="password"]', timeout=10000)
     page.screenshot(path="debug.png", full_page=True)
     page.wait_for_timeout(5000)
