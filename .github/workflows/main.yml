@@ -31,7 +31,7 @@ jobs:
           HASH_PASSWORD: ${{ secrets.HASH_PASSWORD }}
           LINE_CHANNEL_ACCESS_TOKEN: ${{ secrets.LINE_CHANNEL_ACCESS_TOKEN }}
           LINE_USER_ID: ${{ secrets.LINE_USER_ID }}
-        run: python hash_digest_bot.py
+        run: python -u hash_digest_bot.py
 
       
       - name: Upload debug screenshots
