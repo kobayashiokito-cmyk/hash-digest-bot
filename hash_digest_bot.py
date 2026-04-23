@@ -153,8 +153,7 @@ def login_hash(page) -> None:
     print("現在URL:", page.url)
     page.screenshot(path="debug_after_login_click.png", full_page=True)
     print("スクショ保存完了")
-
-    page.wait_for_selector('input[type="email"]', timeout=15000)
+    page.wait_for_selector('input[type="email"], input[name="email"], input[type="text"]', timeout=15000)
     page.fill('input[type="email"]', HASH_EMAIL)
     print("⑤ メール入力完了", flush=True)
 
